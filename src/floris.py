@@ -19,9 +19,11 @@ import json
 import src.logging_manager as logging_manager
 
 from .farm import Farm
-from .wake import Wake
+# from .wake import Wake
 from .turbine import Turbine
 from .flow_field import FlowField
+from .wake_velocity.jensen import JensenVelocityDeficit
+from .grid import TurbineGrid
 
 
 class Floris(logging_manager.LoggerBase):
@@ -68,9 +70,14 @@ class Floris(logging_manager.LoggerBase):
 
         # Initialize the simulation objects
         self.turbine = Turbine(turbine_dict)
-        self.wake = Wake(wake_dict)
+        # self.wake = Wake(wake_dict)
         self.farm = Farm(farm_dict, self.turbine)
         self.flow_field = FlowField(farm_dict)
+
+    def go(self):
+        JensenVelocityDeficit.solver(self.farm, self.flow_field)
+
+    # Utility functions
 
     def set_wake_model(self, wake_model):
         """
