@@ -82,10 +82,16 @@ class FlowData:
         vtk_file.write("ORIGIN {} {} {}".format(self.origin.x1, self.origin.x2, self.origin.x3) + ln)
         vtk_file.write("SPACING {}".format(self.spacing) + ln)
         vtk_file.write("POINT_DATA {}".format(n_points) + ln)
-        vtk_file.write("FIELD attributes 1" + ln)
-        vtk_file.write("UAvg 3 {} float".format(n_points) + ln)
+        vtk_file.write("FIELD attributes 3" + ln)
+        vtk_file.write("UAvg {} float".format(n_points) + ln)
         for u, v, w in zip(self.u, self.v, self.w):
-            vtk_file.write("{}".format(Vec3(u, v, w)) + ln)
+            vtk_file.write("{:10.5f}\n".format(u))
+        vtk_file.write("VAvg {} float".format(n_points) + ln)
+        for u, v, w in zip(self.u, self.v, self.w):
+            vtk_file.write("{:10.5f}\n".format(v))
+        vtk_file.write("WAvg {} float".format(n_points) + ln)
+        for u, v, w in zip(self.u, self.v, self.w):
+            vtk_file.write("{:10.5f}\n".format(w))
 
     @staticmethod
     def crop(ff, x_bnds, y_bnds, z_bnds):
